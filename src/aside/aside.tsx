@@ -65,7 +65,9 @@ function Aside () {
           <Item key={item.id}>
             <FileIcon src={FileIconSrc} />
             <Anchor>{item.name}</Anchor>
-            <CloseButton>x</CloseButton>
+            <CloseButtonWrapper>
+              <CloseButton>x</CloseButton>
+            </CloseButtonWrapper>
           </Item>
         ))}
       </List>
@@ -153,19 +155,39 @@ const List = styled.ul`
   width: 268px;
 `
 
+const CloseButtonWrapper = styled.div`
+  margin-left: auto;
+`
+
+const CloseButton = styled.button`
+  padding-right: 14px;
+  font-family: 1.6em;
+  background-color: transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  color: transparent;
+`
+
 const Item = styled.li`
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 37px;
-  background: rgba(255, 255, 255, 0.05);
+  background: ${({ theme }) => theme.colors.lightBlack};
   border-radius: 6px;
   list-style: none;
   color: ${({ theme }) => theme.colors.white};
   font-size: 1.6em;
-  justify-content: flex-start;
   align-items: center;
-
+  &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    ${CloseButton} {
+      color: ${({ theme }) => theme.colors.white};
+    }
+  }
 `
 
 const FileIcon = styled.img`
@@ -174,11 +196,6 @@ const FileIcon = styled.img`
 
 const Anchor = styled.a`
   margin-left: 15px;
-`
-
-const CloseButton = styled.div`
-  margin-left: 35px;
-  font-family: 1.6em;
 `
 
 export { Aside }
