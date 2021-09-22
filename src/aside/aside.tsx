@@ -37,7 +37,7 @@ function Aside () {
 
   const removeActiveButton = () => {
     files.forEach((item) => {
-      item.active = false;
+      item.active = false
     })
   }
 
