@@ -1,13 +1,18 @@
-import styled from 'styled-components/macro'
-import LogoSrc from './logo.png'
-import FileIconSrc from './file-icon.png'
+import styled, { css } from 'styled-components/macro'
+import LogoSrc from 'ui/icons/logo.png'
+import FileIconSrc from 'ui/icons/file-icon-nonactive.png'
+import FileActiveIconSrc from 'ui/icons/file-icon-active.png'
+import PlusIconSrc from 'ui/icons/plus-icon.png'
+import SavedIcon from 'ui/icons/editing-icon.png'
 
-type File = {
-  id: string,
-  name: string,
-  content: string,
-  active: boolean,
-  status: 'editing' | 'saving' | 'saved'
+export type Status = 'editing' | 'saving' | 'saved'
+
+export type File = {
+  id: string
+  name: string
+  content: string
+  active: boolean
+  Status: 'editing' | 'saving' | 'saved'
 }
 
 const filesList: File[] = [
@@ -16,56 +21,58 @@ const filesList: File[] = [
     name: 'README.md',
     content: 'content',
     active: true,
-    status: 'editing',
+    Status: 'saved',
   },
   {
     id: '2',
     name: 'CONTRIBUTING.md',
     content: 'content',
     active: false,
-    status: 'editing',
+    Status: 'saving',
   },
   {
     id: '3',
     name: 'LICENSE.md',
     content: 'content',
-    active: true,
-    status: 'editing',
+    active: false,
+    Status: 'editing',
   },
   {
     id: '4',
     name: 'Links.md',
     content: 'content',
     active: false,
-    status: 'editing',
+    Status: 'editing',
   },
   {
     id: '5',
     name: 'roadmap.md',
     content: 'content',
-    active: true,
-    status: 'editing',
+    active: false,
+    Status: 'editing',
   },
 ]
 
 function Aside () {
   return (
     <MyAside>
-      <Image src={LogoSrc} />
+      <Logo src={LogoSrc} />
       <LineFiles>
         <Line1 />
         <Text>Arquivos</Text>
         <Line2 />
       </LineFiles>
-      <Button>
-        Adicionar arquivo
-      </Button>
+      <Button><PlusIcon src={PlusIconSrc} />Adicionar arquivo</Button>
       <List>
         {filesList.map((item: File) => (
-          <Item key={item.id}>
-            <FileIcon src={FileIconSrc} />
+          <Item key={item.id} active={item.active}>
+            <FileIcon src={item.active ? FileActiveIconSrc : FileIconSrc} />
             <Anchor>{item.name}</Anchor>
-            <CloseButton>x</CloseButton>
+            <ButtonWrapper>
+              {item.active
+                ? <ActivedButton src={SavedIcon} />
+                : <CloseButton>x</CloseButton>}
+            </ButtonWrapper>
           </Item>
         ))}
       </List>
@@ -73,16 +80,16 @@ function Aside () {
   )
 }
 
-const MyAside = styled.aside`
+const MyAside = styled.aside`${({ theme }) => css`
   display: flex;
   flex-direction: column;
   grid-area: aside;
   height: 100vh;
-  background-color: ${({ theme }) => theme.colors.lightBlack};
+  background-color: ${theme.colors.black};
   align-items: center;
-`
+`}`
 
-const Image = styled.img`
+const Logo = styled.img`
   position: absolute;
   top: 45px;
   width: 164px;
@@ -98,42 +105,40 @@ const LineFiles = styled.div`
   top: 156px;
 `
 
-const Line1 = styled.div`
+const Line1 = styled.div`${({ theme }) => css`
   width: 13.5px;
   height: 0px;
   left: 32px;
   top: 157px;
   /* Primary */
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-`
+  border: 2px solid ${theme.colors.primary};
+`}`
 
-const Line2 = styled.div`
+const Line2 = styled.div`${({ theme }) => css`
   width: 178px;
   height: 0px;
   left: 122px;
   top: 156px;
-  /* Primary */
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-`
+  border: 2px solid ${theme.colors.primary};
+`}`
 
-const Text = styled.span`
+const Text = styled.span`${({ theme }) => css`
   width: 65px;
   height: 21px;
   left: 51px;
   top: 146px;
-
   font-family: DM Sans;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 21px;
-  /* identical to box height */
   letter-spacing: -0.02em;
-  color: ${({ theme }) => theme.colors.white};
-`
+  color: ${theme.colors.white};
+`}`
 
-const Button = styled.button`
+const Button = styled.button`${({ theme }) => css`
   position: absolute;
+  display: flex;
   top: 191px;
   width: 268px;
   height: 33.88px;
@@ -142,6 +147,15 @@ const Button = styled.button`
   font-size: 1.3em;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.lightBlack};
+  align-items: center;
+  justify-content: center;
+  :hover {
+    background: ${theme.colors.primaryDark};
+  }
+`}`
+
+const PlusIcon = styled.img`
+  margin-right: 10px;
 `
 
 const List = styled.ul`
@@ -153,20 +167,48 @@ const List = styled.ul`
   width: 268px;
 `
 
-const Item = styled.li`
+const ButtonWrapper = styled.div`
+  margin-left: auto;
+`
+
+const ActivedButton = styled.img`
+  margin-right: 14px;
+`
+
+const CloseButton = styled.button`
+  padding-right: 14px;
+  font-family: 1.6em;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  color: transparent;
+`
+
+type ActiveStatus = {
+  active: boolean
+}
+
+const Item = styled.li<ActiveStatus>`${({ theme, active }) => css`
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 37px;
-  background: rgba(255, 255, 255, 0.05);
+  background: ${active ? theme.colors.lightBlack : theme.colors.black};
   border-radius: 6px;
   list-style: none;
-  color: ${({ theme }) => theme.colors.white};
+  color: ${theme.colors.white};
   font-size: 1.6em;
-  justify-content: flex-start;
   align-items: center;
-
-`
+  &:hover {
+    background: theme.colors.lightBlack;
+    ${CloseButton} {
+      color: ${theme.colors.white};
+    }
+  }
+`}`
 
 const FileIcon = styled.img`
   margin-left: 14px;
@@ -174,11 +216,6 @@ const FileIcon = styled.img`
 
 const Anchor = styled.a`
   margin-left: 15px;
-`
-
-const CloseButton = styled.div`
-  margin-left: 35px;
-  font-family: 1.6em;
 `
 
 export { Aside }
