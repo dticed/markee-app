@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components/macro'
 import LogoSrc from 'ui/icons/logo.png'
 import FileIconSrc from 'ui/icons/file-icon-nonactive.png'
+import FileActiveIconSrc from 'ui/icons/file-icon-active.png'
 import PlusIconSrc from 'ui/icons/plus-icon.png'
 import SavedIcon from 'ui/icons/editing-icon.png'
 
@@ -65,7 +66,7 @@ function Aside () {
       <List>
         {filesList.map((item: File) => (
           <Item key={item.id} active={item.active}>
-            <FileIcon src={FileIconSrc} />
+            <FileIcon src={item.active ? FileActiveIconSrc : FileIconSrc} />
             <Anchor>{item.name}</Anchor>
             <ButtonWrapper>
               {item.active
