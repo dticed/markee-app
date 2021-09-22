@@ -1,7 +1,34 @@
+import { useState, ChangeEvent } from 'react'
 import styled from 'styled-components/macro'
 import InputFileIconSrc from 'ui/icons/input-icon.png'
+import marked from 'marked'
+// import highlight from 'highlight.js'
+
+import 'highlight.js/styles/atom-one-light.css'
+
+import('highlight.js').then(hljs => {
+  const h = hljs.default
+
+  marked.setOptions({
+    highlight: (code, language) => {
+      if (language && h.getLanguage(language)) {
+        return h.highlight(code, { language }).value
+      }
+
+      return h.highlightAuto(code).value
+    },
+  })
+})
+
+
 
 function Content () {
+  const [content, setContent] = useState('')
+
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value)
+  }
+
   return (
     <Main>
       <TitleWrapper>
@@ -12,11 +39,12 @@ function Content () {
         <LeftArea>
           <TextArea
             placeholder='Digite o conteúdo'
+            onChange={handleChange}
           />
         </LeftArea>
         <RightArea>
           <FormattedText>
-            <Article>Teste</Article>
+            <Article dangerouslySetInnerHTML={{ __html: marked(content) }} />
           </FormattedText>
         </RightArea>
       </ContentWrapper>
