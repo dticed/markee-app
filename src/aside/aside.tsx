@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import styled, { css } from 'styled-components/macro'
 import LogoSrc from 'ui/icons/logo.png'
 import FileIconSrc from 'ui/icons/file-icon-nonactive.png'
 import FileActiveIconSrc from 'ui/icons/file-icon-active.png'
 import PlusIconSrc from 'ui/icons/plus-icon.png'
 import SavedIcon from 'ui/icons/editing-icon.png'
+import { v4 as uuidv4 } from 'uuid'
 
 export type Status = 'editing' | 'saving' | 'saved'
 
@@ -16,44 +18,29 @@ export type File = {
 }
 
 const filesList: File[] = [
-  {
-    id: '1',
-    name: 'README.md',
-    content: 'content',
-    active: true,
-    Status: 'saved',
-  },
-  {
-    id: '2',
-    name: 'CONTRIBUTING.md',
-    content: 'content',
-    active: false,
-    Status: 'saving',
-  },
-  {
-    id: '3',
-    name: 'LICENSE.md',
-    content: 'content',
-    active: false,
-    Status: 'editing',
-  },
-  {
-    id: '4',
-    name: 'Links.md',
-    content: 'content',
-    active: false,
-    Status: 'editing',
-  },
-  {
-    id: '5',
-    name: 'roadmap.md',
-    content: 'content',
-    active: false,
-    Status: 'editing',
-  },
+
 ]
 
 function Aside () {
+  const [files, addFile] = useState(filesList)
+
+  const handleClick = () => {
+    removeActiveButton()
+    addFile(files => [...files, {
+      id: uuidv4(),
+      name: 'Sem título',
+      content: '',
+      active: true,
+      Status: 'saved',
+    }])
+  }
+
+  const removeActiveButton = () => {
+    files.forEach((item) => {
+      item.active = false
+    })
+  }
+
   return (
     <MyAside>
       <Logo src={LogoSrc} />
@@ -62,9 +49,9 @@ function Aside () {
         <Text>Arquivos</Text>
         <Line2 />
       </LineFiles>
-      <Button><PlusIcon src={PlusIconSrc} />Adicionar arquivo</Button>
+      <Button onClick={handleClick}><PlusIcon src={PlusIconSrc} />Adicionar arquivo</Button>
       <List>
-        {filesList.map((item: File) => (
+        {files.map((item: File) => (
           <Item key={item.id} active={item.active}>
             <FileIcon src={item.active ? FileActiveIconSrc : FileIconSrc} />
             <Anchor>{item.name}</Anchor>
