@@ -1,20 +1,22 @@
 import styled from 'styled-components/macro'
-import InputFileIcon from './input-icon.png'
+import InputFileIconSrc from 'ui/icons/input-icon.png'
 
 function Content () {
   return (
     <Main>
       <TitleWrapper>
-        <FileIcon src={InputFileIcon} />
+        <FileIcon src={InputFileIconSrc} />
         <InputFileName placeholder='Sem título' />
       </TitleWrapper>
       <ContentWrapper>
         <LeftArea>
-          <TextArea placeholder='Digite o conteúdo' />
+          <TextArea
+            placeholder='Digite o conteúdo'
+          />
         </LeftArea>
         <RightArea>
           <FormattedText>
-            <Heading1>Teste</Heading1>
+            <Article>Teste</Article>
           </FormattedText>
         </RightArea>
       </ContentWrapper>
@@ -55,6 +57,7 @@ const ContentWrapper = styled.div`
     "leftarea rightarea";
   grid-template-columns: 0.7fr 1fr;
   grid-template-rows: auto;
+  grid-gap: 40px;
 `
 
 const LeftArea = styled.div`
@@ -76,19 +79,17 @@ const TextArea = styled.textarea`
   line-height: 30px;
 `
 
-const RightArea = styled.div`
+const RightArea = styled.article`
   grid-area: rightarea;
-  margin-left: 32px;
-  margin-top: -25px;
 `
 
 const FormattedText = styled.div`
   font-family: 'DM Sans';
-  position: absolute;
 `
 
-const Heading1 = styled.h1`
-
+const Article = styled.article`
+  margin-top: 0px;
+  font-size: 1.8em;
 `
 
 export { Content }
