@@ -1,46 +1,17 @@
-import { useState } from 'react'
 import styled, { css } from 'styled-components/macro'
+import { File } from 'resources/files/types'
 import LogoSrc from 'ui/icons/logo.png'
 import FileIconSrc from 'ui/icons/file-icon-nonactive.png'
 import FileActiveIconSrc from 'ui/icons/file-icon-active.png'
 import PlusIconSrc from 'ui/icons/plus-icon.png'
-import SavedIcon from 'ui/icons/editing-icon.png'
-import { v4 as uuidv4 } from 'uuid'
+import SavedIcon from 'ui/icons/saved-icon.png'
 
-export type Status = 'editing' | 'saving' | 'saved'
-
-export type File = {
-  id: string
-  name: string
-  content: string
-  active: boolean
-  Status: 'editing' | 'saving' | 'saved'
+type AsideProps = {
+  files: File[]
+  addFileHandleClick: () => void
 }
 
-const filesList: File[] = [
-
-]
-
-function Aside () {
-  const [files, addFile] = useState(filesList)
-
-  const handleClick = () => {
-    removeActiveButton()
-    addFile(files => [...files, {
-      id: uuidv4(),
-      name: 'Sem título',
-      content: '',
-      active: true,
-      Status: 'saved',
-    }])
-  }
-
-  const removeActiveButton = () => {
-    files.forEach((item) => {
-      item.active = false
-    })
-  }
-
+function Aside ({ files, addFileHandleClick }: AsideProps) {
   return (
     <MyAside>
       <Logo src={LogoSrc} />
@@ -49,7 +20,7 @@ function Aside () {
         <Text>Arquivos</Text>
         <Line2 />
       </LineFiles>
-      <Button onClick={handleClick}><PlusIcon src={PlusIconSrc} />Adicionar arquivo</Button>
+      <Button onClick={addFileHandleClick}><PlusIcon src={PlusIconSrc} />Adicionar arquivo</Button>
       <List>
         {files.map((item: File) => (
           <Item key={item.id} active={item.active}>

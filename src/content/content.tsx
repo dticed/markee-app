@@ -1,4 +1,5 @@
-import { useState, ChangeEvent } from 'react'
+import { ChangeEvent, RefObject } from 'react'
+import { File } from 'resources/files/types'
 import styled from 'styled-components/macro'
 import InputFileIconSrc from 'ui/icons/input-icon.png'
 import marked from 'marked'
@@ -20,29 +21,39 @@ import('highlight.js').then(hljs => {
   })
 })
 
-function Content () {
-  const [content, setContent] = useState('')
+type ContentProps = {
+  file?: File
+  inputRef: RefObject<HTMLInputElement>
+  handleChangeTitleName: (id: string) => (e: ChangeEvent<HTMLInputElement>) => void
+  handleChangeContent: (id: string) => (e: ChangeEvent<HTMLTextAreaElement>) => void
+}
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value)
+function Content ({ file, inputRef, handleChangeTitleName, handleChangeContent }: ContentProps) {
+  if (!file) {
+    return null
   }
 
   return (
     <Main>
       <TitleWrapper>
         <FileIcon src={InputFileIconSrc} />
-        <InputFileName placeholder='Sem título' />
+        <InputFileName
+          value={file?.name}
+          ref={inputRef}
+          onChange={handleChangeTitleName(file.id)}
+          autoFocus
+        />
       </TitleWrapper>
       <ContentWrapper>
         <LeftArea>
           <TextArea
             placeholder='Digite o conteúdo'
-            onChange={handleChange}
+            onChange={handleChangeContent(file.id)}
           />
         </LeftArea>
         <RightArea>
           <FormattedText>
-            <Article dangerouslySetInnerHTML={{ __html: marked(content) }} />
+            <Article dangerouslySetInnerHTML={{ __html: marked(file.content) }} />
           </FormattedText>
         </RightArea>
       </ContentWrapper>
@@ -72,8 +83,7 @@ const TitleWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: 1.8em;
-  letter-spacing: -0.02em;
+  font-size: 1.6em;
 `
 
 const ContentWrapper = styled.div`
