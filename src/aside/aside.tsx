@@ -1,17 +1,21 @@
 import styled, { css } from 'styled-components/macro'
 import { File } from 'resources/files/types'
+import { MouseEvent } from 'react'
 import LogoSrc from 'ui/icons/logo.png'
 import FileIconSrc from 'ui/icons/file-icon-nonactive.png'
 import FileActiveIconSrc from 'ui/icons/file-icon-active.png'
 import PlusIconSrc from 'ui/icons/plus-icon.png'
 import SavedIcon from 'ui/icons/saved-icon.png'
+import EditingIcon from 'ui/icons/editing-icon.png'
+// import SavingIcon from 'ui/icons/saving-icon.png'
 
 type AsideProps = {
   files: File[]
   addFileHandleClick: () => void
+  handleClickFile: (id: string) => (e: MouseEvent) => void
 }
 
-function Aside ({ files, addFileHandleClick }: AsideProps) {
+function Aside ({ files, addFileHandleClick, handleClickFile }: AsideProps) {
   return (
     <MyAside>
       <Logo src={LogoSrc} />
@@ -22,13 +26,15 @@ function Aside ({ files, addFileHandleClick }: AsideProps) {
       </LineFiles>
       <Button onClick={addFileHandleClick}><PlusIcon src={PlusIconSrc} />Adicionar arquivo</Button>
       <List>
-        {files.map((item: File) => (
-          <Item key={item.id} active={item.active}>
-            <FileIcon src={item.active ? FileActiveIconSrc : FileIconSrc} />
-            <Anchor>{item.name}</Anchor>
+        {files.map((file: File) => (
+          <Item key={file.id} active={file.active}>
+            <Anchor onClick={handleClickFile(file.id)}>
+              <FileIcon src={file.active ? FileActiveIconSrc : FileIconSrc} />
+              {file.name}
+            </Anchor>
             <ButtonWrapper>
-              {item.active
-                ? <ActivedButton src={SavedIcon} />
+              {file.active
+                ? <ActivedButton src={file.Status === 'editing' ? EditingIcon : SavedIcon} />
                 : <CloseButton>x</CloseButton>}
             </ButtonWrapper>
           </Item>
@@ -170,10 +176,15 @@ const Item = styled.li<ActiveStatus>`${({ theme, active }) => css`
 
 const FileIcon = styled.img`
   margin-left: 14px;
+  padding-right: 10px;
 `
 
 const Anchor = styled.a`
-  margin-left: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 240px;
+  height: 100%;
 `
 
 export { Aside }

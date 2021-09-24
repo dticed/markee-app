@@ -48,6 +48,7 @@ function Content ({ file, inputRef, handleChangeTitleName, handleChangeContent }
         <LeftArea>
           <TextArea
             placeholder='Digite o conteúdo'
+            value={file.content}
             onChange={handleChangeContent(file.id)}
           />
         </LeftArea>

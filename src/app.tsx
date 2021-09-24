@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent } from 'react'
+import { useState, useRef, useEffect, ChangeEvent, MouseEvent } from 'react'
 import { File } from 'resources/files/types'
 import { Aside } from 'aside'
 import { Content } from 'content'
@@ -8,6 +8,27 @@ import { v4 as uuidv4 } from 'uuid'
 function App () {
   const inputRef = useRef<HTMLInputElement>(null)
   const [files, setFile] = useState<File[]>([])
+
+  useEffect(() => {
+    const updateStatus = () => {
+      setTimeout(() => {
+        files.forEach(file => {
+          if (file.Status === 'editing') {
+            console.log(file.Status)
+          }
+        })
+      }, 300)
+
+      setTimeout(() => {
+        files.forEach((file) => {
+          if (file.Status === 'saved') {
+            console.log(file.Status)
+          }
+        })
+      })
+    }
+    updateStatus()
+  }, [files])
 
   const addFileHandleClick = () => {
     inputRef.current?.focus()
@@ -19,6 +40,16 @@ function App () {
       active: true,
       Status: 'saved',
     }])
+  }
+
+  const handleClickFile = (id: string) => (e: MouseEvent) => {
+    e.preventDefault()
+    inputRef.current?.focus()
+    setFile(files => files.map((file) => ({
+      ...file,
+      active: file.id === id,
+      content: file.content,
+    })))
   }
 
   const removeActiveButton = () => {
@@ -33,6 +64,7 @@ function App () {
         return {
           ...file,
           name: e.target.value,
+          Status: 'editing',
         }
       }
 
@@ -46,6 +78,7 @@ function App () {
         return {
           ...file,
           content: e.target.value,
+          Status: 'editing',
         }
       }
 
@@ -56,7 +89,11 @@ function App () {
   return (
     <>
       <Grid>
-        <Aside files={files} addFileHandleClick={addFileHandleClick} />
+        <Aside
+          files={files}
+          addFileHandleClick={addFileHandleClick}
+          handleClickFile={handleClickFile}
+        />
         <Content
           file={files.find(file => file.active === true)}
           inputRef={inputRef}
