@@ -10,24 +10,41 @@ function App () {
   const [files, setFile] = useState<File[]>([])
 
   useEffect(() => {
-    const updateStatus = () => {
-      setTimeout(() => {
-        files.forEach(file => {
-          if (file.Status === 'editing') {
-            console.log(file.Status)
-          }
-        })
-      }, 300)
+    let timer: ReturnType<typeof setTimeout>
 
-      setTimeout(() => {
-        files.forEach((file) => {
-          if (file.Status === 'saved') {
-            console.log(file.Status)
+    function updateStatus () {
+      const file = files.find(file => file.active === true)
+
+      if (!file || file.Status !== 'editing') {
+        return
+      }
+      timer = setTimeout(() => {
+        setFile(files => files.map(file => {
+          if (file.active) {
+            return {
+              ...file,
+              Status: 'saving',
+            }
           }
-        })
-      })
+          return file
+        }))
+
+        setTimeout(() => {
+          setFile(files => files.map(file => {
+            if (file.active) {
+              return {
+                ...file,
+                Status: 'saved',
+              }
+            }
+            return file
+          }))
+        }, 500)
+      }, 300)
     }
+
     updateStatus()
+    return () => clearTimeout(timer)
   }, [files])
 
   const addFileHandleClick = () => {
@@ -86,6 +103,10 @@ function App () {
     }))
   }
 
+  const handleRemoveFile = (id: string) => {
+    setFile(files => files.filter(file => file.id !== id))
+  }
+
   return (
     <>
       <Grid>
@@ -93,6 +114,7 @@ function App () {
           files={files}
           addFileHandleClick={addFileHandleClick}
           handleClickFile={handleClickFile}
+          handleRemoveFile={handleRemoveFile}
         />
         <Content
           file={files.find(file => file.active === true)}

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components/macro'
+import styled, { css, keyframes } from 'styled-components/macro'
 import { File } from 'resources/files/types'
 import { MouseEvent } from 'react'
 import LogoSrc from 'ui/icons/logo.png'
@@ -7,15 +7,16 @@ import FileActiveIconSrc from 'ui/icons/file-icon-active.png'
 import PlusIconSrc from 'ui/icons/plus-icon.png'
 import SavedIcon from 'ui/icons/saved-icon.png'
 import EditingIcon from 'ui/icons/editing-icon.png'
-// import SavingIcon from 'ui/icons/saving-icon.png'
+import SavingIcon from 'ui/icons/saving-icon.png'
 
 type AsideProps = {
   files: File[]
   addFileHandleClick: () => void
   handleClickFile: (id: string) => (e: MouseEvent) => void
+  handleRemoveFile: (id: string) => void
 }
 
-function Aside ({ files, addFileHandleClick, handleClickFile }: AsideProps) {
+function Aside ({ files, addFileHandleClick, handleClickFile, handleRemoveFile }: AsideProps) {
   return (
     <MyAside>
       <Logo src={LogoSrc} />
@@ -33,9 +34,10 @@ function Aside ({ files, addFileHandleClick, handleClickFile }: AsideProps) {
               {file.name}
             </Anchor>
             <ButtonWrapper>
-              {file.active
-                ? <ActivedButton src={file.Status === 'editing' ? EditingIcon : SavedIcon} />
-                : <CloseButton>x</CloseButton>}
+              {file.active && file.Status === 'editing' && <EditingIconTest />}
+              {file.active && file.Status === 'saving' && <SavingIconTest />}
+              {file.active && file.Status === 'saved' && <SavedIconTest />}
+              {!file.active && <CloseButton onClick={() => handleRemoveFile(file.id)}>x</CloseButton>}
             </ButtonWrapper>
           </Item>
         ))}
@@ -135,10 +137,6 @@ const ButtonWrapper = styled.div`
   margin-left: auto;
 `
 
-const ActivedButton = styled.img`
-  margin-right: 14px;
-`
-
 const CloseButton = styled.button`
   padding-right: 14px;
   font-family: 1.6em;
@@ -186,5 +184,39 @@ const Anchor = styled.a`
   width: 240px;
   height: 100%;
 `
+
+const EditingIconTest = styled.img`
+  margin-right: 14px;
+`
+
+EditingIconTest.defaultProps = {
+  src: EditingIcon,
+}
+
+const SavedIconTest = styled.img`
+  margin-right: 14px;
+`
+
+SavedIconTest.defaultProps = {
+  src: SavedIcon,
+}
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`
+
+const SavingIconTest = styled.img`
+  margin-right: 14px;
+  animation: ${rotate} 1s linear infinite;
+`
+
+SavingIconTest.defaultProps = {
+  src: SavingIcon,
+}
 
 export { Aside }
