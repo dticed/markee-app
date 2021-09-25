@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent } from 'react'
+import { useState, useRef, useEffect, ChangeEvent, MouseEvent } from 'react'
 import { File } from 'resources/files/types'
 import { Aside } from 'aside'
 import { Content } from 'content'
@@ -8,6 +8,44 @@ import { v4 as uuidv4 } from 'uuid'
 function App () {
   const inputRef = useRef<HTMLInputElement>(null)
   const [files, setFile] = useState<File[]>([])
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>
+
+    function updateStatus () {
+      const file = files.find(file => file.active === true)
+
+      if (!file || file.Status !== 'editing') {
+        return
+      }
+      timer = setTimeout(() => {
+        setFile(files => files.map(file => {
+          if (file.active) {
+            return {
+              ...file,
+              Status: 'saving',
+            }
+          }
+          return file
+        }))
+
+        setTimeout(() => {
+          setFile(files => files.map(file => {
+            if (file.active) {
+              return {
+                ...file,
+                Status: 'saved',
+              }
+            }
+            return file
+          }))
+        }, 500)
+      }, 300)
+    }
+
+    updateStatus()
+    return () => clearTimeout(timer)
+  }, [files])
 
   const addFileHandleClick = () => {
     inputRef.current?.focus()
@@ -19,6 +57,16 @@ function App () {
       active: true,
       Status: 'saved',
     }])
+  }
+
+  const handleClickFile = (id: string) => (e: MouseEvent) => {
+    e.preventDefault()
+    inputRef.current?.focus()
+    setFile(files => files.map((file) => ({
+      ...file,
+      active: file.id === id,
+      content: file.content,
+    })))
   }
 
   const removeActiveButton = () => {
@@ -33,6 +81,7 @@ function App () {
         return {
           ...file,
           name: e.target.value,
+          Status: 'editing',
         }
       }
 
@@ -46,6 +95,7 @@ function App () {
         return {
           ...file,
           content: e.target.value,
+          Status: 'editing',
         }
       }
 
@@ -53,10 +103,19 @@ function App () {
     }))
   }
 
+  const handleRemoveFile = (id: string) => {
+    setFile(files => files.filter(file => file.id !== id))
+  }
+
   return (
     <>
       <Grid>
-        <Aside files={files} addFileHandleClick={addFileHandleClick} />
+        <Aside
+          files={files}
+          addFileHandleClick={addFileHandleClick}
+          handleClickFile={handleClickFile}
+          handleRemoveFile={handleRemoveFile}
+        />
         <Content
           file={files.find(file => file.active === true)}
           inputRef={inputRef}
