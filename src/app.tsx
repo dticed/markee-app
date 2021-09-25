@@ -11,7 +11,7 @@ function App () {
     handleClickFile,
     handleChangeTitleName,
     handleChangeContent,
-    handleRemoveFile
+    handleRemoveFile,
   } = useFiles()
   return (
     <>
