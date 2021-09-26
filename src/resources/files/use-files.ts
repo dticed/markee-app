@@ -1,3 +1,4 @@
+import localforage from 'localforage'
 import { useState, useRef, useEffect, ChangeEvent, MouseEvent } from 'react'
 import { File } from 'resources/files/types'
 import { v4 as uuidv4 } from 'uuid'
@@ -42,6 +43,36 @@ export function useFiles () {
 
     updateStatus()
     return () => clearTimeout(timer)
+  }, [files])
+
+  useEffect(() => {
+    localforage.setItem('markee', files)
+  }, [files])
+
+  useEffect(() => {
+    async function getFilesFromStorage () {
+      const files = await localforage.getItem<File[]>('markee')
+
+      if (files) {
+        setFile(files)
+        return
+      }
+
+      addFileHandleClick()
+    }
+
+    getFilesFromStorage()
+  }, [])
+
+  useEffect(() => {
+    async function getLength () {
+      const len = await localforage.length()
+      if (len === 0) {
+        localforage.setItem('file', { id: 'lucas' })
+      }
+    }
+
+    getLength()
   }, [files])
 
   const addFileHandleClick = () => {
