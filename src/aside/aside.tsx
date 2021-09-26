@@ -28,11 +28,18 @@ function Aside ({ files, addFileHandleClick, handleClickFile, handleRemoveFile }
       <Button onClick={addFileHandleClick}><PlusIcon src={PlusIconSrc} />Adicionar arquivo</Button>
       <List>
         {files.map((file: File) => (
-          <Item key={file.id} active={file.active}>
-            <Anchor onClick={handleClickFile(file.id)}>
+          <Item
+            key={file.id}
+            active={file.active}
+            onClick={(e) => {
+              e.preventDefault()
+              window.history.pushState(null, '', `/file/${file.id}`)
+            }}
+          >
+            <ItemLink onClick={handleClickFile(file.id)}>
               <FileIcon src={file.active ? FileActiveIconSrc : FileIconSrc} />
               {file.name}
-            </Anchor>
+            </ItemLink>
             <ButtonWrapper>
               {file.active && file.Status === 'editing' && <EditingIconTest />}
               {file.active && file.Status === 'saving' && <SavingIconTest />}
@@ -177,7 +184,7 @@ const FileIcon = styled.img`
   padding-right: 10px;
 `
 
-const Anchor = styled.a`
+const ItemLink = styled.a`
   display: flex;
   flex-direction: row;
   align-items: center;
