@@ -62,6 +62,7 @@ export function useFiles () {
     }
 
     getFilesFromStorage()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
