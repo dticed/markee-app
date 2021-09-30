@@ -74,10 +74,11 @@ export const Button = styled.button`${({ theme }) => css`
   color: ${({ theme }) => theme.colors.lightBlack};
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   :hover {
     background: ${theme.colors.primaryDark};
   }
-  cursor: pointer;
+
 `}`
 
 export const PlusIcon = styled.img`
@@ -138,11 +139,12 @@ export const FileIcon = styled.img`
 `
 
 export const ItemLink = styled.a`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 240px;
-  height: 100%;
+  display: inline-block;
+  width: 230px;
+  /* height: 100%; */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 
 export const EditingIconTest = styled.img`
