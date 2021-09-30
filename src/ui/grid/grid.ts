@@ -5,5 +5,5 @@ export const Grid = styled.div`
   grid-template-areas:
     "aside content";
   grid-template-rows: auto;
-  grid-template-columns: 1fr 5fr;
+  grid-template-columns: 300px auto;
 `
