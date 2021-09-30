@@ -8,6 +8,7 @@ export const MyAside = styled.aside`${({ theme }) => css`
   flex-direction: column;
   grid-area: aside;
   height: 100vh;
+  width: auto;
   background-color: ${theme.colors.black};
   align-items: center;
 `}`
