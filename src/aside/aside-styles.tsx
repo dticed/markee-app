@@ -63,19 +63,21 @@ export const Text = styled.span`${({ theme }) => css`
 export const Button = styled.button`${({ theme }) => css`
   position: absolute;
   display: flex;
-  top: 191px;
+  top: 195px;
   width: 268px;
   height: 33.88px;
   background: ${({ theme }) => theme.colors.primary};
   border-radius: 3.38806px;
+  border: none;
   font-size: 1.3em;
-  font-weight: 400;
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.lightBlack};
   align-items: center;
   justify-content: center;
   :hover {
     background: ${theme.colors.primaryDark};
   }
+  cursor: pointer;
 `}`
 
 export const PlusIcon = styled.img`
