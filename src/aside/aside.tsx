@@ -33,8 +33,8 @@ export function Aside ({ files, addFileHandleClick, handleClickFile, handleRemov
               window.history.pushState(null, '', `/file/${file.id}`)
             }}
           >
+            <S.FileIcon src={file.active ? FileActiveIconSrc : FileIconSrc} />
             <S.ItemLink onClick={handleClickFile(file.id)}>
-              <S.FileIcon src={file.active ? FileActiveIconSrc : FileIconSrc} />
               {file.name}
             </S.ItemLink>
             <S.ButtonWrapper>
