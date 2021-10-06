@@ -7,8 +7,8 @@ export const MyAside = styled.aside`${({ theme }) => css`
   display: flex;
   flex-direction: column;
   grid-area: aside;
-  height: 100vh;
   width: auto;
+  height: 100%;
   background-color: ${theme.colors.black};
   align-items: center;
 `}`
@@ -18,6 +18,10 @@ export const Logo = styled.img`
   top: 45px;
   width: 164px;
   height: 44.31px;
+  @media (max-width: 1000px) {
+    width: 123px;
+    height: 33px;
+  }
 `
 
 export const LineFiles = styled.div`
@@ -27,6 +31,9 @@ export const LineFiles = styled.div`
   width: 268px;
   align-items: center;
   top: 156px;
+  @media (max-width: 1000px) {
+    width: 181px;
+  }
 `
 
 export const Line1 = styled.div`${({ theme }) => css`
@@ -78,7 +85,9 @@ export const Button = styled.button`${({ theme }) => css`
   :hover {
     background: ${theme.colors.primaryDark};
   }
-
+  @media (max-width: 1000px) {
+    width: 180px;
+  }
 `}`
 
 export const PlusIcon = styled.img`
@@ -89,9 +98,26 @@ export const List = styled.ul`
   padding: 0px;
   position: absolute;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   top: 256.88px;
   width: 268px;
+  max-height: 700px;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  @media (max-width: 1000px) {
+    width: 180px;
+    max-height: 600px;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+  }
+  @media (max-width: 1400px) {
+    max-height: 600px;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+  }
 `
 
 export const ButtonWrapper = styled.div`
