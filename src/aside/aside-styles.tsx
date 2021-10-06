@@ -32,7 +32,7 @@ export const LineFiles = styled.div`
   align-items: center;
   top: 156px;
   @media (max-width: 1000px) {
-    width: 180px;
+    width: 181px;
   }
 `
 
