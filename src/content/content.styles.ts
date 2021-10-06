@@ -3,7 +3,8 @@ import styled from 'styled-components/macro'
 export const Main = styled.main`
   grid-area: content;
   background-color: #e5e5e5;
-  padding: 24px
+  padding: 24px;
+  width: auto;
 `
 
 export const InputFileName = styled.input`
