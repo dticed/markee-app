@@ -63,16 +63,19 @@ export const Text = styled.span`${({ theme }) => css`
 
 export const Button = styled.button`${({ theme }) => css`
   display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 268px;
-  height: 45px;
+  line-height: 35px;
+  padding: 0 20px;
+  
   background: ${({ theme }) => theme.colors.primary};
   border-radius: 3.38806px;
   border: none;
   font-size: 1.3em;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.lightBlack};
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   :hover {
     background: ${theme.colors.primaryDark};
