@@ -14,10 +14,10 @@ export const MyAside = styled.aside`${({ theme }) => css`
 `}`
 
 export const Logo = styled.img`
-  position: absolute;
-  top: 45px;
   width: 164px;
   height: 44.31px;
+  padding: 40px 0px;
+  margin-bottom: 30px;
   @media (max-width: 1000px) {
     width: 123px;
     height: 33px;
@@ -25,22 +25,19 @@ export const Logo = styled.img`
 `
 
 export const LineFiles = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: row;
   width: 268px;
+  margin-bottom: 10px;
   align-items: center;
-  top: 156px;
   @media (max-width: 1000px) {
     width: 181px;
   }
 `
 
 export const Line1 = styled.div`${({ theme }) => css`
-  width: 13.5px;
+  width: 18.5px;
   height: 0px;
-  left: 32px;
-  top: 157px;
   /* Primary */
   border: 2px solid ${theme.colors.primary};
 `}`
@@ -48,16 +45,13 @@ export const Line1 = styled.div`${({ theme }) => css`
 export const Line2 = styled.div`${({ theme }) => css`
   width: 178px;
   height: 0px;
-  left: 122px;
-  top: 156px;
   border: 2px solid ${theme.colors.primary};
 `}`
 
 export const Text = styled.span`${({ theme }) => css`
   width: 65px;
   height: 21px;
-  left: 51px;
-  top: 146px;
+  margin: 0px 10px;
   font-family: DM Sans;
   font-style: normal;
   font-weight: 500;
@@ -68,19 +62,20 @@ export const Text = styled.span`${({ theme }) => css`
 `}`
 
 export const Button = styled.button`${({ theme }) => css`
-  position: absolute;
   display: flex;
-  top: 195px;
+  align-items: center;
+  justify-content: center;
+
   width: 268px;
-  height: 33.88px;
+  line-height: 35px;
+  padding: 0 20px;
+  
   background: ${({ theme }) => theme.colors.primary};
   border-radius: 3.38806px;
   border: none;
   font-size: 1.3em;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.lightBlack};
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   :hover {
     background: ${theme.colors.primaryDark};
@@ -95,15 +90,13 @@ export const PlusIcon = styled.img`
 `
 
 export const List = styled.ul`
-  padding: 0px;
-  position: absolute;
   display: flex;
-  flex-direction: row;
-  top: 256.88px;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 268px;
-  max-height: 700px;
+  margin: 20px 0px;
   flex-wrap: wrap;
-  overflow-y: scroll;
+  overflow-y: auto;
   ::-webkit-scrollbar {
     display: none;
   }
