@@ -4,7 +4,7 @@ Markee-app it's a markdown editor.
 
 This project was developed at [Brainn's](https://b-academy.brainn.co/) bootcamp.
 
-The instructor was [Fernando Daciuk](https://twitter.com/fdaciuk). He is an amazing guy and professor. 
+The instructor was [Fernando Daciuk](https://twitter.com/fdaciuk).
 
 <img src="https://github.com/dticed/markee-app/blob/main/markeeapp-image.png?raw=true" width="800">
 
